@@ -19,10 +19,10 @@ def threader(servidor, tid):
 def verificaPorta(servidor, porta, tid):
     try:
         # O programa irá escanear portas de min até max+1
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        _socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         print("Verificando a porta {} com a thread {}".format(porta, tid))
         socket.setdefaulttimeout(20)       
-        s.connect((servidor, porta))
+        _socket.connect((servidor, porta))
         
     except TimeoutError:  
         portasFiltradas.append(porta)
@@ -34,7 +34,7 @@ def verificaPorta(servidor, porta, tid):
         portasAbertas.append(porta)
         
     finally:
-        s.close()
+        _socket.close()
 
 
 def main():
@@ -49,12 +49,12 @@ def main():
         thread = threading.Thread(target=threader, args=(servidor, x,), daemon=True)
         thread.start()
     
-    for porta in range(min, max + 1):
-        
+    for porta in range(min, max + 1):       
         filaDePortas.put(porta)
     
     filaDePortas.join()
 
+    # Print do resultado
     print("\n       Portas abertas: {}".format(len(portasAbertas)))
     
     print("-" * (34 + len(str(max))))
