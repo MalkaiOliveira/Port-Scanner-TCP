@@ -20,8 +20,8 @@ def verificaPorta(servidor, porta, tid):
     try:
         # O programa irá escanear portas de min até max+1
         _socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        print("Verificando a porta {} com a thread {}".format(porta, tid))
-        socket.setdefaulttimeout(20)       
+        socket.setdefaulttimeout(20)
+
         _socket.connect((servidor, porta))
         
     except TimeoutError:  
