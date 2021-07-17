@@ -38,14 +38,17 @@ def verificaPorta(servidor, porta, tid):
 
 
 def main():
-    
+    # Recebe as informações de host e da faixa de números de porta a serem analisados
     servidor = socket.gethostbyname(sys.argv[1]) 
     min = int(sys.argv[2])
     max = int(sys.argv[3])
+    threadNumber = int(sys.argv[4])
 
     print("Escaneando o servidor {} no intervalo [{}, {}].".format(servidor, min, max))
     
-    for x in range(250):
+    # Criamos aqui threadNumber threads para acelerar o processo de análise,
+    #  atribuindo para cada thread uma porta da faixa
+    for x in range(threadNumber):
         thread = threading.Thread(target=threader, args=(servidor, x,), daemon=True)
         thread.start()
     
@@ -54,7 +57,7 @@ def main():
     
     filaDePortas.join()
 
-    # Print do resultado
+    # Print dos resultados
     print("\n       Portas abertas: {}".format(len(portasAbertas)))
     
     print("-" * (34 + len(str(max))))
@@ -63,20 +66,20 @@ def main():
         print("| O status porta {} é aberta. |".format(porta))
     print("-" * (34 + len(str(max))))
     
-    print("\n       Portas fechadas: {}".format(len(portasFechadas)))
-    
-    print("-" * (34 + len(str(max))))
-    portasFechadas.sort()
-    for porta in portasFechadas:
-        print("| O status da porta {} é fechada. |".format(porta))
-    print("-" * (34 + len(str(max))))
-    
     print("\n       Portas filtradas: {}".format(len(portasFiltradas)))
     
     print("-" * (34 + len(str(max))))
     portasFiltradas.sort()
     for porta in portasFiltradas:
         print("| O status da porta {} é filtrada. |".format(porta))
+    print("-" * (34 + len(str(max))))
+
+    print("\n       Portas fechadas: {}".format(len(portasFechadas)))
+    
+    print("-" * (34 + len(str(max))))
+    portasFechadas.sort()
+    for porta in portasFechadas:
+        print("| O status da porta {} é fechada. |".format(porta))
     print("-" * (34 + len(str(max))))
 
 
